@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Backend.Services.Interfaces;
+using Backend.Services;
+using Scalar.AspNetCore;
+using Backend.Data;
+using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,19 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddScoped<IPessoaService, PessoaService>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("A Conexão DefaultConnection não foi configurada.");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint(
-            "/openapi/v1.json",
-            "Controle de Gastos Residenciais API");
-    });
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
