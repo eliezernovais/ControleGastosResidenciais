@@ -1,16 +1,17 @@
-﻿using Backend.Models;
+﻿using Backend.DTOs.Pessoas;
+using Backend.Models;
 namespace Backend.Services.Interfaces
 {
     public interface IPessoaService
     {
         // Adiciona uma Nova Pessoa
-        Task<bool> AddPessoaAsync(Pessoa pessoa);
+        Task<PessoaResponse> AddPessoaAsync(PessoaRequest pessoa);
         // Retorna uma lista contendo todas as pessoas
-        Task<List<Pessoa>> GetAllPessoaAsync();
+        Task<List<PessoaResponse>> GetAllPessoaAsync();
         // Retorna uma unica pessoa pelo ID
-        Task<Pessoa?> GetPessoaByIdAsync(int id);
+        Task<PessoaResponse?> GetPessoaByIdAsync(int id);
         // Edita uma Pessoa 
-        Task<bool> EditPessoaByIdAsync(int id,Pessoa pessoa);
+        Task<bool> EditPessoaByIdAsync(int id,PessoaRequest pessoa);
         // Deleta uma Pessoa
         Task<bool> DeletePessoaByIdAsync(int id);
     }
