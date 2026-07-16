@@ -12,8 +12,13 @@ namespace Backend.Controllers
         [HttpPost]
         // Cria uma nova Transacao
         public async Task<ActionResult<TransacaoResponse>> CriarTransacao(TransacaoRequest transacaoRequest) {
-            var transacao = await service.CriarTransacao(transacaoRequest);
-            return CreatedAtAction(nameof(GetTransacaoById), new { id = transacao.Id }, transacao);
+            try
+            {
+                var transacao = await service.CriarTransacao(transacaoRequest);
+                return CreatedAtAction(nameof(GetTransacaoById), new { id = transacao.Id }, transacao);
+            }catch (ArgumentException erro) {
+                return BadRequest(erro.Message);
+            }
         }
 
         [HttpGet]

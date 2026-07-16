@@ -16,7 +16,7 @@ namespace Backend.Services
 
             //Verifica se a pessoa é menor de idade, e caso seja, verifica se a transacao é uma receita
             } else if (pessoa.MenorDeIdade() == true && transacaoRequest.Tipo == Enums.TipoTransacao.Receita) {
-                throw new ArgumentException("Menores de Idade somente podem registrar Despesas!");
+                throw new ArgumentException("Menores de Idade somente podem cadastrar Despesas!");
             }
             var Transacao = new Transacao(
                     transacaoRequest.Descricao,
