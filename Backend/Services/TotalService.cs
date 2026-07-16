@@ -1,7 +1,6 @@
 ﻿using Backend.Data;
 using Backend.DTOs.Total;
 using Backend.Enums;
-using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 namespace Backend.Services

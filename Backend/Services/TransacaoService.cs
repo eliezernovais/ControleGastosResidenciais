@@ -3,7 +3,6 @@ using Backend.DTOs.Transacao;
 using Backend.Models;
 using Backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 namespace Backend.Services
 {
     public class TransacaoService(AppDbContext context) : ITransacaoService

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Backend.DTOs.Transacao;
+﻿using Backend.DTOs.Transacao;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

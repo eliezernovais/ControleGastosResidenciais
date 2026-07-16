@@ -1,5 +1,4 @@
 ﻿using Backend.Enums;
-using Backend.Models;
 
 namespace Backend.DTOs.Transacao
 {
