@@ -35,12 +35,14 @@ namespace Backend.Controllers
 
         [HttpGet("Pessoa/{pessoaId}")]
         // Lista todas as Transacoes da Pessoa pelo ID da Pessoa
-        public async Task<ActionResult<List<TransacaoResponse>>> GetTransacaoByPessoaId(int pessoaId)
+        public async Task<ActionResult<List<TransacaoResponse>?>> GetTransacaoByPessoaId(int pessoaId)
         {
             var transacoes = await service.GetTransacaoByPessoaId(pessoaId);
-            if (!transacoes.Any())
+            if (transacoes == null)
             {
-                return NotFound("Nenhuma Transação encontrada para esta Pessoa");
+                return NotFound("Nenhuma pessoa encontrada no ID informado!");
+            }else if(!transacoes.Any()){
+                return NotFound("Nenhuma Transação encontrada no ID informado!");
             }
             return Ok(transacoes);
         }
