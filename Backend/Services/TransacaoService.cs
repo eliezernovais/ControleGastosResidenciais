@@ -36,30 +36,30 @@ namespace Backend.Services
         }
         public async Task<List<TransacaoResponse>> GetAllTransacao()
         => await context.Transacoes.Select(
-            t => new TransacaoResponse { 
-                Id = t.Id,
-                Descricao = t.Descricao,
-                Valor = t.Valor,
-                Tipo = t.Tipo,
-                PessoaId = t.PessoaId }).ToListAsync();
+            transacao => new TransacaoResponse { 
+                Id = transacao.Id,
+                Descricao = transacao.Descricao,
+                Valor = transacao.Valor,
+                Tipo = transacao.Tipo,
+                PessoaId = transacao.PessoaId }).ToListAsync();
 
         public async Task<TransacaoResponse?> GetTransacaoById(int id)
-        => await context.Transacoes.Where(t => t.Id == id).Select(t => new TransacaoResponse {
-            Id = t.Id,
-            Descricao = t.Descricao,
-            Valor = t.Valor,
-            Tipo = t.Tipo,
-            PessoaId = t.PessoaId
+        => await context.Transacoes.Where(transacao => transacao.Id == id).Select(transacao => new TransacaoResponse {
+            Id = transacao.Id,
+            Descricao = transacao.Descricao,
+            Valor = transacao.Valor,
+            Tipo = transacao.Tipo,
+            PessoaId = transacao.PessoaId
         }).FirstOrDefaultAsync();
 
         public async Task<List<TransacaoResponse>> GetTransacaoByPessoaId(int pessoaId)
-        => await context.Transacoes.Where(t => t.PessoaId == pessoaId).Select(t => new TransacaoResponse
+        => await context.Transacoes.Where(transacao => transacao.PessoaId == pessoaId).Select(transacao => new TransacaoResponse
            {
-               Id = t.Id,
-               Descricao = t.Descricao,
-               Valor = t.Valor,
-               Tipo = t.Tipo,
-               PessoaId = t.PessoaId
+               Id = transacao.Id,
+               Descricao = transacao.Descricao,
+               Valor = transacao.Valor,
+               Tipo = transacao.Tipo,
+               PessoaId = transacao.PessoaId
            }).ToListAsync();
         }
 }

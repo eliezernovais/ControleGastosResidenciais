@@ -26,17 +26,17 @@ namespace Backend.Services
 
         public async Task<List<PessoaResponse>> GetAllPessoa()
         => await context.Pessoas.Select(
-            p => new PessoaResponse { 
-                Id = p.Id,
-                Nome = p.Nome,
-                Idade = p.Idade }).ToListAsync();
+            pessoa => new PessoaResponse { 
+                Id = pessoa.Id,
+                Nome = pessoa.Nome,
+                Idade = pessoa.Idade }).ToListAsync();
 
         public async Task<PessoaResponse?> GetPessoaById(int id)
-        => await context.Pessoas.Where(p => p.Id == id).Select(
-                p => new PessoaResponse{
-                Id = p.Id,
-                Nome = p.Nome,
-                Idade = p.Idade}).FirstOrDefaultAsync();
+        => await context.Pessoas.Where(pessoa => pessoa.Id == id).Select(
+                pessoa => new PessoaResponse{
+                Id = pessoa.Id,
+                Nome = pessoa.Nome,
+                Idade = pessoa.Idade}).FirstOrDefaultAsync();
 
         public async Task<bool> EditPessoaById(int id, PessoaRequest pessoa)
         {
