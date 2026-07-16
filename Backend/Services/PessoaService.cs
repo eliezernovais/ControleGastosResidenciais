@@ -8,7 +8,7 @@ namespace Backend.Services
 {
     public class PessoaService(AppDbContext context) : IPessoaService
     {
-        public async Task<PessoaResponse> AddPessoaAsync(PessoaRequest pessoaRequest)
+        public async Task<PessoaResponse> AddPessoa(PessoaRequest pessoaRequest)
         {
             var pessoa = new Pessoa(
                 pessoaRequest.Nome,
@@ -24,16 +24,21 @@ namespace Backend.Services
             };
         }
 
-        public async Task<List<PessoaResponse>> GetAllPessoaAsync()
-            => await context.Pessoas.Select(p => new PessoaResponse { Id = p.Id, Nome = p.Nome, Idade = p.Idade }).ToListAsync();
+        public async Task<List<PessoaResponse>> GetAllPessoa()
+        => await context.Pessoas.Select(
+            p => new PessoaResponse { 
+                Id = p.Id,
+                Nome = p.Nome,
+                Idade = p.Idade }).ToListAsync();
 
-        public async Task<PessoaResponse?> GetPessoaByIdAsync(int id)
-        {
-            var pessoa = await context.Pessoas.Where(p => p.Id == id).Select(p => new PessoaResponse{Id = p.Id ,Nome = p.Nome,Idade = p.Idade}).FirstOrDefaultAsync();
-            return pessoa;
-        }
+        public async Task<PessoaResponse?> GetPessoaById(int id)
+        => await context.Pessoas.Where(p => p.Id == id).Select(
+                p => new PessoaResponse{
+                Id = p.Id,
+                Nome = p.Nome,
+                Idade = p.Idade}).FirstOrDefaultAsync();
 
-        public async Task<bool> EditPessoaByIdAsync(int id, PessoaRequest pessoa)
+        public async Task<bool> EditPessoaById(int id, PessoaRequest pessoa)
         {
             var pessoaAnterior = await context.Pessoas.FindAsync(id);
 
@@ -46,7 +51,7 @@ namespace Backend.Services
             return true;
         }
 
-        public async Task<bool> DeletePessoaByIdAsync(int id)
+        public async Task<bool> DeletePessoaById(int id)
         {
             var pessoa = await context.Pessoas.FindAsync(id);
 

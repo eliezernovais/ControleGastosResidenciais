@@ -4,11 +4,12 @@ namespace Backend.Models
 {
     public class Transacao
     {
-        public int Id { get; set; }
-        public string Descricao { get; set; } = string.Empty;
-        public decimal Valor { get; set; }
-        public TipoTransacao Tipo { get; set; }
-        public int PessoaID { get; set; }
+        public int Id { get; private set; }
+        public string Descricao { get; private set; } = string.Empty;
+        public decimal Valor { get; private set; }
+        public TipoTransacao Tipo { get; private set; }
+        public int PessoaId { get; private set; }
+        public Pessoa Pessoa { get; private set; } = null!;
 
         private Transacao() { }
         public Transacao(string descricao, decimal valor, TipoTransacao tipo, int pessoaId) {
@@ -19,11 +20,12 @@ namespace Backend.Models
             // Verifica se o Valor é menor ou igual á zero
             else if(valor <= 0){
                 throw new ArgumentException("O valor deve ser maior que zero", nameof(valor));
-            }else {
+            }
+            else {
                 Descricao = descricao;
                 Valor = valor;
                 Tipo = tipo;
-                PessoaID = pessoaId;
+                PessoaId = pessoaId;
             }
         }
 
