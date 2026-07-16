@@ -41,10 +41,9 @@ namespace Backend.Services
         public async Task<bool> EditPessoaById(int id, PessoaRequest pessoa)
         {
             var pessoaAnterior = await context.Pessoas.FindAsync(id);
-
-            if (pessoaAnterior is null) 
-                return false;
-
+            //Caso nao encontre a pessoa pelo ID, retorna edição nao concluida
+            if (pessoaAnterior is null) return false;
+            //Caso Encontre, atualiza a Pessoa
             pessoaAnterior.Atualizar(pessoa.Nome, pessoa.Idade);
             await context.SaveChangesAsync();
 
@@ -54,9 +53,9 @@ namespace Backend.Services
         public async Task<bool> DeletePessoaById(int id)
         {
             var pessoa = await context.Pessoas.FindAsync(id);
-
-            if (pessoa is null)
-                return false;
+            // Caso nao encontre a pessoa pelo ID, Retorna Deleção nao concluida
+            if (pessoa is null) return false;
+            // Caso Encontre, Deleta a pessoa
             context.Pessoas.Remove(pessoa);
             await context.SaveChangesAsync();
 
