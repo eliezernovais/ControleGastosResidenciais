@@ -59,8 +59,12 @@
 }
 
 .tabela-pessoas td:last-child {
-  display: flex;
   text-align: right;
+}
+
+.acoes-pessoa {
+  display: flex;
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -111,7 +115,7 @@
     flex-direction: column;
   }
 
-  .tabela-pessoas td:last-child {
+  .acoes-pessoa {
     flex-direction: column;
   }
 }
@@ -145,4 +149,23 @@
 
 .btn-cancelar:hover {
   background-color: #d1d5db;
+}
+.tabela-pessoas tfoot td {
+  padding: 14px 12px;
+  border-top: 2px solid #e6e6e6;
+  background-color: #ddd;
+  font-size: 15px;
+}
+
+.tabela-pessoas tfoot td:first-child {
+  text-align: left;
+}
+
+.tabela-pessoas th:last-child,
+.tabela-pessoas td:last-child {
+  text-align: center;
+}
+
+.acoes-pessoa {
+  justify-content: center;
 }

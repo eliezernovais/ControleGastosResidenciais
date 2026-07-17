@@ -75,7 +75,7 @@ function Pessoas() {
   }
 
   async function cadastrarPessoa() {
-    if (!nome.trim || !idade) {
+    if (!nome.trim() || !idade) {
       alert("Preencha o nome e a idade.");
       return;
     }
@@ -198,6 +198,27 @@ function Pessoas() {
     }
   }
 
+  function buscarTotalPessoa(pessoaId: number) {
+    return totais.find((total) => total.pessoaId === pessoaId);
+  }
+
+  const resumoDaListagem = pessoasFiltradas.reduce(
+    (resumo, pessoa) => {
+      const totalPessoa = buscarTotalPessoa(pessoa.id);
+
+      resumo.receitas += totalPessoa?.totalReceitas ?? 0;
+      resumo.despesas += totalPessoa?.totalDespesas ?? 0;
+      resumo.saldo += totalPessoa?.saldo ?? 0;
+
+      return resumo;
+    },
+    {
+      receitas: 0,
+      despesas: 0,
+      saldo: 0,
+    },
+  );
+
   return (
     <div className="pessoas-layout">
       <BarraLateral />
@@ -288,52 +309,124 @@ function Pessoas() {
             <tr>
               <th>Nome</th>
               <th>Idade</th>
+              <th>Receitas</th>
+              <th>Despesas</th>
               <th>Saldo</th>
               <th>Ações</th>
             </tr>
           </thead>
+
           <tbody>
-            {pessoasFiltradas.map((pessoa) => (
-              <tr key={pessoa.id}>
-                <td>{pessoa.nome}</td>
-
-                <td>{pessoa.idade} anos</td>
-
-                <td>
-                  {buscarSaldoPessoa(pessoa.id).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </td>
-
-                <td>
-                  <button
-                    type="button"
-                    className="btnVerPessoa"
-                    onClick={() => navigate(`/pessoas/${pessoa.id}`)}
-                  >
-                    Visualizar
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btnEditarPessoa"
-                    onClick={() => iniciarEdicao(pessoa)}
-                  >
-                    Editar
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btnExcluirPessoa"
-                    onClick={() => excluirPessoa(pessoa.id)}
-                  >
-                    Excluir
-                  </button>
-                </td>
+            {pessoasFiltradas.length === 0 ? (
+              <tr>
+                <td colSpan={6}>Nenhuma pessoa encontrada.</td>
               </tr>
-            ))}
+            ) : (
+              pessoasFiltradas.map((pessoa) => {
+                const totalPessoa = buscarTotalPessoa(pessoa.id);
+
+                const totalReceitas = totalPessoa?.totalReceitas ?? 0;
+                const totalDespesas = totalPessoa?.totalDespesas ?? 0;
+                const saldo = totalPessoa?.saldo ?? 0;
+
+                return (
+                  <tr key={pessoa.id}>
+                    <td>{pessoa.nome}</td>
+
+                    <td>{pessoa.idade} anos</td>
+
+                    <td>
+                      {totalReceitas.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+
+                    <td>
+                      {totalDespesas.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+
+                    <td>
+                      {saldo.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+
+                    <td>
+                      <div className="acoes-pessoa">
+                        <button
+                          type="button"
+                          className="btnVerPessoa"
+                          onClick={() => navigate(`/pessoas/${pessoa.id}`)}
+                        >
+                          Visualizar
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btnEditarPessoa"
+                          onClick={() => iniciarEdicao(pessoa)}
+                        >
+                          Editar
+                        </button>
+
+                        <button
+                          type="button"
+                          className="btnExcluirPessoa"
+                          onClick={() => excluirPessoa(pessoa.id)}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
+
+          {pessoasFiltradas.length > 0 && (
+            <tfoot>
+              <tr>
+                <td colSpan={2}>
+                  <strong>Total</strong>
+                </td>
+
+                <td>
+                  <strong>
+                    {resumoDaListagem.receitas.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </strong>
+                </td>
+
+                <td>
+                  <strong>
+                    {resumoDaListagem.despesas.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </strong>
+                </td>
+
+                <td>
+                  <strong>
+                    {resumoDaListagem.saldo.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}
+                  </strong>
+                </td>
+
+                <td></td>
+              </tr>
+            </tfoot>
+          )}
         </table>
       </main>
     </div>
