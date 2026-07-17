@@ -361,3 +361,18 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Bancos locais
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ASP.NET
+bin/
+obj/
+
+# Configurações locais e segredos
+appsettings.Development.json
+.env
