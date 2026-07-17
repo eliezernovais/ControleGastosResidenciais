@@ -23,9 +23,8 @@ O sistema permite cadastrar pessoas, registrar transações financeiras, visuali
 
 ## Regra de negócio
 
-Pessoas menores de 18 anos não podem receber transações do tipo receita.
-
-Elas podem possuir apenas despesas.
+- Pessoas menores de 18 anos só podem possuir transações do tipo despesa.
+- Ao excluir uma pessoa, todas as transações vinculadas a ela também são excluídas automaticamente.
 
 ## Tecnologias utilizadas
 
