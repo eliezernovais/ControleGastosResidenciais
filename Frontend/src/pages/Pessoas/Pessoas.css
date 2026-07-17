@@ -1,0 +1,14 @@
+.pessoas-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.pessoas-conteudo {
+  flex: 1;
+  padding: 32px;
+  padding-top: 10px;
+}
+.h1-title{
+  font-size: 45px;
+  margin-bottom: 10px;
+}

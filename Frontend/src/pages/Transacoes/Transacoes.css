@@ -1,0 +1,10 @@
+.transacoes-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.transacoes-conteudo {
+  flex: 1;
+  padding: 32px;
+  padding-top: 10px;
+}
