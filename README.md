@@ -46,9 +46,43 @@ Elas podem possuir apenas despesas.
 ### Banco de dados
 
 - SQLite
+
+
+## Estrutura do projeto
+
+```text
+ControleGastosResidenciais/
+├── backend/
+│   ├── Controllers/
+│   ├── DTOs/
+│   ├── Data/
+│   ├── Enums/
+│   ├── Migrations/
+│   ├── Models/
+│   ├── Properties/
+│   ├── Services/
+│   ├── Program.cs
+│   └── appsettings.json
+│
+└── frontend/
+    ├── src/
+    │   ├── components/
+    │   ├── config/
+    │   │   └── api.ts
+    │   ├── pages/
+    │   │   ├── Home/
+    │   │   ├── Pessoas/
+    │   │   └── Transacoes/
+    │   ├── App.tsx
+    │   ├── main.tsx
+    │   └── index.css
+    ├── .env.example
+    └── package.json
+```
+
 ## Como executar o projeto
 
-Após clonar o repositório, execute os comandos na ordem abaixo.
+Execute os comandos na ordem abaixo.
 
 ### 1. Clonar o repositório
 
@@ -180,33 +214,21 @@ npm run dev
 ```
 
 > O comando `Copy-Item .env.example .env` só precisa ser executado quando o arquivo `.env` ainda não existir.
-## Estrutura do projeto
 
-```text
-ControleGastosResidenciais/
-├── backend/
-│   ├── Controllers/
-│   ├── DTOs/
-│   ├── Data/
-│   ├── Enums/
-│   ├── Migrations/
-│   ├── Models/
-│   ├── Properties/
-│   ├── Services/
-│   ├── Program.cs
-│   └── appsettings.json
-│
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── config/
-    │   │   └── api.ts
-    │   ├── pages/
-    │   │   ├── Home/
-    │   │   ├── Pessoas/
-    │   │   └── Transacoes/
-    │   ├── App.tsx
-    │   ├── main.tsx
-    │   └── index.css
-    ├── .env.example
-    └── package.json
+## Início rápido
+
+Após realizar a configuração inicial, abra dois terminais.
+
+### Terminal 1 — Back-end
+
+```powershell
+cd Backend
+dotnet run
+```
+
+### Terminal 2 — Front-end
+
+```powershell
+cd Frontend
+npm run dev
+```
