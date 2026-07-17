@@ -1,0 +1,106 @@
+.pessoa-detalhes-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.pessoa-detalhes-conteudo {
+  flex: 1;
+  padding: 32px;
+}
+
+.btn-voltar {
+  margin-bottom: 24px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.header-pessoa-selecionada h1 {
+  font-size: 50px;
+  margin-top: 10px;
+  margin-bottom: 21px;
+}
+
+.header-pessoa-selecionada p {
+  font-size: 25px;
+}
+
+.pessoa-informacoes {
+  margin-top: 24px;
+}
+
+.pessoa-informacoes strong {
+  font-size: 22px;
+}
+
+.informacoes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.informacoes-grid div {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.informacoes-grid span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.cards-totais {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.card-total {
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.card-receita {
+  background-color: rgba(0, 209, 17, 0.486);
+}
+
+.card-despesa {
+  background-color: rgba(209, 0, 0, 0.486);
+}
+.card-total span {
+  color: black;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.card-total strong {
+  color: black;
+  font-size: 24px;
+}
+
+.tabela-transacoes {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-transacoes th,
+.tabela-transacoes td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+@media (max-width: 768px) {
+  .informacoes-grid,
+  .cards-totais {
+    grid-template-columns: 1fr;
+  }
+
+  .pessoa-detalhes-conteudo {
+    padding: 20px;
+  }
+}

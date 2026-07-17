@@ -6,9 +6,143 @@
 .pessoas-conteudo {
   flex: 1;
   padding: 32px;
-  padding-top: 10px;
 }
-.h1-title{
-  font-size: 45px;
+
+.pessoas-conteudo header {
+  margin-bottom: 24px;
+}
+
+.h1-title {
+  margin: 0 0 8px;
+  font-size: 32px;
+}
+
+.pessoas-conteudo header p {
+  margin: 0;
+  color: #666;
+}
+
+.pessoas-conteudo > div {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.input-pesquisa {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.btnNovaPessoa {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tabela-pessoas {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-pessoas th,
+.tabela-pessoas td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabela-pessoas th {
+  font-weight: 600;
+}
+
+.tabela-pessoas td:last-child {
+  display: flex;
+  text-align: right;
+  gap: 8px;
+}
+
+.btnVerPessoa,
+.btnEditarPessoa,
+.btnExcluirPessoa {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.formulario-pessoa {
+  width: 550px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.formulario-pessoa h2 {
+  margin-top: 0;
+}
+
+.formulario-pessoa > div {
   margin-bottom: 10px;
+}
+
+.formulario-pessoa label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.formulario-pessoa input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .pessoas-conteudo {
+    padding: 20px;
+  }
+
+  .pessoas-conteudo > div {
+    flex-direction: column;
+  }
+
+  .tabela-pessoas td:last-child {
+    flex-direction: column;
+  }
+}
+.formulario-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-salvar,
+.btn-cancelar {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-salvar {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-salvar:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-cancelar {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+.btn-cancelar:hover {
+  background-color: #d1d5db;
 }

@@ -1,6 +1,7 @@
 import BarraLateral from "../../components/BarraLateral";
 import "./Pessoas.css";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type Pessoa = {
   id: number;
@@ -8,7 +9,19 @@ type Pessoa = {
   idade: number;
 };
 
+type TotalPessoa = {
+  pessoaId: number;
+  nome: string;
+  totalReceitas: number;
+  totalDespesas: number;
+  saldo: number;
+};
+
 function Pessoas() {
+  const navigate = useNavigate();
+
+  const [totais, setTotais] = useState<TotalPessoa[]>([]);
+
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
   const [pesquisa, setPesquisa] = useState("");
@@ -22,17 +35,47 @@ function Pessoas() {
   const [pessoaEditandoId, setPessoaEditandoId] = useState<number | null>(null);
 
   useEffect(() => {
-    async function CarregarPessoas() {
-      const response = await fetch("https://localhost:7198/api/Pessoa");
-      const dados = await response.json();
-      setPessoas(dados);
+    async function carregarDados() {
+      try {
+        const [responsePessoas, responseTotais] = await Promise.all(
+          [
+            fetch("https://localhost:7198/api/Pessoa"),
+            fetch("https://localhost:7198/api/Total/Pessoas")
+          ],
+        );
+        if (!responsePessoas.ok) {
+          throw new Error("Erro ao buscar pessoas.");
+        }
+
+        const dadosPessoas: Pessoa[] = await responsePessoas.json();
+
+        
+
+        if (!responseTotais.ok) {
+          throw new Error("Erro ao buscar os totais.");
+        }
+
+        const dadosTotais: TotalPessoa[] = await responseTotais.json();
+
+        setPessoas(dadosPessoas);
+        setTotais(dadosTotais);
+      } catch (erro) {
+        console.error("Erro ao carregar dados:", erro);
+      }
     }
-    CarregarPessoas();
+
+    carregarDados();
   }, []);
 
   const pessoasFiltradas = pessoas.filter((pessoa) =>
     pessoa.nome.toLowerCase().includes(pesquisa.toLowerCase()),
   );
+
+  function buscarSaldoPessoa(pessoaId: number) {
+    const totalEncontrado = totais.find((total) => total.pessoaId === pessoaId);
+
+    return totalEncontrado?.saldo ?? 0;
+  }
 
   async function cadastrarPessoa() {
     if (!nome.trim || !idade) {
@@ -168,7 +211,7 @@ function Pessoas() {
           <p>Cadastre e gerencie as pessoas da residência.</p>
         </header>
 
-        <div>
+        <div className="pessoas-acoes">
           <input
             type="search"
             placeholder="Buscar Pessoas..."
@@ -188,6 +231,8 @@ function Pessoas() {
           >
             + Nova Pessoa
           </button>
+        </div>
+        <div>
           {mostrarFormulario && (
             <div className="formulario-pessoa">
               <h2>
@@ -216,9 +261,10 @@ function Pessoas() {
                 />
               </div>
 
-              <div>
+              <div className="formulario-acoes">
                 <button
                   type="button"
+                  className="btn-salvar"
                   onClick={
                     pessoaEditandoId === null ? cadastrarPessoa : editarPessoa
                   }
@@ -228,7 +274,11 @@ function Pessoas() {
                     : "Salvar alterações"}
                 </button>
 
-                <button type="button" onClick={() => limparFormulario()}>
+                <button
+                  type="button"
+                  className="btn-cancelar"
+                  onClick={() => limparFormulario()}
+                >
                   Cancelar
                 </button>
               </div>
@@ -241,6 +291,7 @@ function Pessoas() {
             <tr>
               <th>Nome</th>
               <th>Idade</th>
+              <th>Saldo</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -248,11 +299,25 @@ function Pessoas() {
             {pessoasFiltradas.map((pessoa) => (
               <tr key={pessoa.id}>
                 <td>{pessoa.nome}</td>
-                <td>{pessoa.idade} Anos</td>
+
+                <td>{pessoa.idade} anos</td>
+
                 <td>
-                  <button type="button" className="btnVerPessoa">
+                  {buscarSaldoPessoa(pessoa.id).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </td>
+
+                <td>
+                  <button
+                    type="button"
+                    className="btnVerPessoa"
+                    onClick={() => navigate(`/pessoas/${pessoa.id}`)}
+                  >
                     Visualizar
                   </button>
+
                   <button
                     type="button"
                     className="btnEditarPessoa"
@@ -260,6 +325,7 @@ function Pessoas() {
                   >
                     Editar
                   </button>
+
                   <button
                     type="button"
                     className="btnExcluirPessoa"
