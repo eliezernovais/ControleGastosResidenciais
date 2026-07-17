@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BarraLateral from "../../components/BarraLateral";
 import "./Transacoes.css";
+import { API_URL } from "../../config/api";
 
 type Transacao = {
   id: number;
@@ -53,28 +54,29 @@ function Transacoes() {
   useEffect(() => {
     async function carregarDados() {
       try {
-        const [responseTransacoes, responsePessoas] = await Promise.all(
-          [
-            fetch("https://localhost:7198/api/Transacao"),
-            fetch("https://localhost:7198/api/Pessoa")
-          ],
-        );
+        //Recebe os Dados do Banco
+        const [responseTransacoes, responsePessoas] = await Promise.all([
+          fetch(`${API_URL}/api/Transacao`),
+          fetch(`${API_URL}/api/Pessoa`),
+        ]);
 
+        //Mensagem de Erro se nao retornar Dados de Transacoes
         if (!responseTransacoes.ok) {
           throw new Error("Não foi possível buscar as transações.");
         }
 
-        const dadosTransacoes: Transacao[] = await responseTransacoes.json();
-
+        //Mensagem de Erro se nao retornar Dados de Pessoas
         if (!responsePessoas.ok) {
           throw new Error("Não foi possível buscar as pessoas.");
         }
+        const dadosTransacoes: Transacao[] = await responseTransacoes.json();
 
         const dadosPessoas: Pessoa[] = await responsePessoas.json();
 
         setTransacoes(dadosTransacoes);
         setPessoas(dadosPessoas);
       } catch (erro) {
+        //Retorna a mensagem de erro do Backend
         console.error("Erro ao carregar os dados:", erro);
         setErro("Não foi possível carregar os dados.");
       } finally {
@@ -85,20 +87,24 @@ function Transacoes() {
     carregarDados();
   }, []);
 
+  //Retorna o nome da pessoa pelo ID
   function buscarNomePessoa(pessoaId: number) {
     const pessoaEncontrada = pessoas.find((pessoa) => pessoa.id === pessoaId);
 
     return pessoaEncontrada?.nome ?? "Pessoa não encontrada";
   }
-
+  //Cadastra a transacao no Banco de Dados*
   async function cadastrarTransacao() {
     if (!descricao.trim() || !valor || !pessoaId) {
+      {
+        /* */
+      }
       alert("Preencha todos os campos.");
       return;
     }
 
     try {
-      const response = await fetch("https://localhost:7198/api/Transacao", {
+      const response = await fetch(`${API_URL}/api/Transacao`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +116,7 @@ function Transacoes() {
           pessoaId: Number(pessoaId),
         }),
       });
-
+      //Se o Banco nao retornar resposta Retorna Mensagem de erro
       if (!response.ok) {
         const mensagem = await response.text();
 
@@ -127,6 +133,7 @@ function Transacoes() {
       setPessoaId("");
       setMostrarFormulario(false);
     } catch (erro) {
+      //Retorna a mensagem de erro do Backend
       console.error("Erro ao cadastrar transação:", erro);
 
       const mensagem =
@@ -143,12 +150,13 @@ function Transacoes() {
       <BarraLateral />
 
       <main className="transacoes-conteudo">
+        {/* Cabeçalho da pagina*/}
         <header className="transacoes-cabecalho">
           <div>
             <h1 className="h1-title">Transações</h1>
             <p>Consulte todas as receitas e despesas cadastradas.</p>
           </div>
-
+          {/* Botao de Nova Transação*/}
           <button
             type="button"
             className="btnNovaTransacao"
@@ -156,13 +164,16 @@ function Transacoes() {
           >
             + Nova Transação
           </button>
+          {/* Formulario de Nova Transação*/}
         </header>
+        {/* Mostra o formulario se for verdadeiro*/}
         {mostrarFormulario && (
           <section className="formulario-transacao">
             <h2>Nova Transação</h2>
 
             <div>
               <label htmlFor="descricao">Descrição</label>
+              {/* Input da Descrição da Transacao*/}
               <input
                 id="descricao"
                 type="text"
@@ -173,6 +184,7 @@ function Transacoes() {
             </div>
 
             <div>
+              {/*Input do Valor da Transação*/}
               <label htmlFor="valor">Valor</label>
               <input
                 id="valor"
@@ -187,6 +199,7 @@ function Transacoes() {
 
             <div>
               <label htmlFor="tipo">Tipo</label>
+              {/*Select do Tipo da Transação */}
               <select
                 id="tipo"
                 value={tipo}
@@ -199,6 +212,7 @@ function Transacoes() {
 
             <div>
               <label htmlFor="pessoa">Pessoa</label>
+              {/*Select da Pessoa responsavel pela transacao */}
               <select
                 id="pessoa"
                 value={pessoaId}
@@ -215,6 +229,7 @@ function Transacoes() {
             </div>
 
             <div className="formulario-acoes">
+              {/*Botao de Salvar Transacao*/}
               <button
                 type="button"
                 className="btn-salvar"
@@ -222,7 +237,7 @@ function Transacoes() {
               >
                 Salvar
               </button>
-
+              {/*Botao de Cancelar Transação*/}
               <button
                 type="button"
                 className="btn-cancelar"
@@ -233,14 +248,16 @@ function Transacoes() {
             </div>
           </section>
         )}
+        {/*Filtro das Transações*/}
         <div className="filtros-transacoes">
+          {/*Input do Filtro das Transações */}
           <input
             type="search"
             placeholder="Buscar por descrição..."
             value={pesquisa}
             onChange={(evento) => setPesquisa(evento.target.value)}
           />
-
+          {/*Select do Tipo da Transação */}
           <select
             value={filtroTipo}
             onChange={(evento) => setFiltroTipo(evento.target.value)}
@@ -250,12 +267,14 @@ function Transacoes() {
             <option value="2">Receitas</option>
           </select>
         </div>
+        {/* Se estiver Carregando Mostra mensagem de carregando*/}
         {carregando && <p>Carregando transações...</p>}
-
+        {/* Se der erro mostra mensagem de erro*/}
         {erro && <p className="mensagem-erro">{erro}</p>}
-
+        {/* Caso nao esteja carregando nem ocorrido nenhum erro, mostra a tabela */}
         {!carregando && !erro && (
           <table className="tabela-transacoes">
+            {/* Tabela das Transações*/}
             <thead>
               <tr>
                 <th>Descrição</th>
@@ -266,19 +285,23 @@ function Transacoes() {
             </thead>
 
             <tbody>
+              {/* Mostra as Transações Filtradas*/}
               {transacoesFiltradas.length === 0 ? (
                 <tr>
+                  {/*Mensagem se nao encontrar nenhuma transação */}
                   <td colSpan={4}>Nenhuma transação cadastrada.</td>
                 </tr>
               ) : (
                 transacoesFiltradas.map((transacao) => (
+                  //Mapeia as Transações Encontradas para sua respectiva Linha, sendo a key da linha o id da transação
                   <tr key={transacao.id}>
+                    {/* Descrição da Transação na Tabela*/}
                     <td>{transacao.descricao}</td>
-
+                    {/* Nome da Pessoa responsavel pela transação na Tabela */}
                     <td>{buscarNomePessoa(transacao.pessoaId)}</td>
-
+                    {/* Tipo da Transação na Tabela*/}
                     <td>{transacao.tipo === 1 ? "Despesa" : "Receita"}</td>
-
+                    {/*Valor convertido em reais na tabela */}
                     <td>
                       {transacao.valor.toLocaleString("pt-BR", {
                         style: "currency",

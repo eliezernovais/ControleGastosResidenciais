@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import BarraLateral from "../../components/BarraLateral";
+import { API_URL } from "../../config/api";
 
 type TotalGeral = {
   totalGeralReceitas: number;
@@ -19,17 +20,21 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    {/* Carrega os Dados do Banco de DAdos*/}
     async function carregarTotal() {
       try {
-        const response = await fetch("https://localhost:7198/api/Total/Geral");
-
+        {/* Recebe os Dados do Banco*/}
+        const response = await fetch(`${API_URL}/api/Total/Geral`);
+        //Caso nao retorne uma resposta, retorna um erro
         if (!response.ok) {
           throw new Error("Erro ao carregar os totais.");
         }
 
         const dados: TotalGeral = await response.json();
         setTotal(dados);
+
       } catch (erro) {
+        //Qualquer erro na resposta retorna um erro com a mensagem do backend
         console.error("Erro ao carregar total geral:", erro);
         setErro("Não foi possível carregar os totais.");
       } finally {
@@ -41,21 +46,26 @@ function Home() {
   }, []);
 
   return (
+    
     <div className="home-layout">
       <BarraLateral />
 
       <main className="home-conteudo">
+        {/* Cabeçalho da pagina*/}
         <header>
           <h1 className="h1-title">Controle de Gastos Residenciais</h1>
           <p>Resumo financeiro da residência.</p>
         </header>
-
+        {/*Se estiver carregando algum dado, exibe a mensagem carregando */}
         {carregando && <p>Carregando...</p>}
 
+        {/*Se der erro, exibe mensagem de erro*/}
         {erro && <p className="mensagem-erro">{erro}</p>}
 
+        {/*Caso nao de erro nem esteja carregando nenhum dado, exibe a pagina completa*/}
         {!carregando && !erro && (
           <>
+          {/* Receita Geral*/}
             <section className="cards-totais">
               <div className="card-total">
                 <span>Receitas</span>
@@ -66,7 +76,7 @@ function Home() {
                   })}
                 </strong>
               </div>
-
+              {/* Despesa Geral*/}
               <div className="card-total">
                 <span>Despesas</span>
                 <strong>
@@ -76,7 +86,7 @@ function Home() {
                   })}
                 </strong>
               </div>
-
+              {/* Saldo Geral*/}
               <div className="card-total">
                 <span>Saldo</span>
                 <strong>
@@ -87,12 +97,12 @@ function Home() {
                 </strong>
               </div>
             </section>
-
+            {/* Botao Gerenciar Pessoas*/}
             <section className="atalhos-home">
               <button type="button" onClick={() => navigate("/pessoas")}>
                 Gerenciar Pessoas
               </button>
-
+              {/* Botao Gerenciar Transacoes*/}
               <button type="button" onClick={() => navigate("/transacoes")}>
                 Gerenciar Transações
               </button>

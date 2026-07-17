@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BarraLateral from "../../components/BarraLateral";
 import "./PessoaDetalhes.css";
+import { API_URL } from "../../config/api";
 
 type Pessoa = {
   id: number;
@@ -45,9 +46,9 @@ function PessoaDetalhes() {
       try {
         const [response, responseTransacoes, responseTotal] = await Promise.all(
           [
-            fetch(`https://localhost:7198/api/Pessoa/${id}`),
-            fetch(`https://localhost:7198/api/Transacao/Pessoa/${id}`),
-            fetch(`https://localhost:7198/api/Total/Pessoa/${id}`),
+            fetch(`${API_URL}/api/Pessoa/${id}`),
+            fetch(`${API_URL}/api/Transacao/Pessoa/${id}`),
+            fetch(`${API_URL}/api/Total/Pessoa/${id}`),
           ],
         );
         if (responseTotal.ok) {
@@ -134,6 +135,7 @@ function PessoaDetalhes() {
               <div className="card-total card-receita">
                 <span>Receitas</span>
                 <strong>
+                  {/* Se o total nao for nulo, pega as receitastotais, se nao usa 0*/}
                   {(total?.totalReceitas ?? 0).toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",

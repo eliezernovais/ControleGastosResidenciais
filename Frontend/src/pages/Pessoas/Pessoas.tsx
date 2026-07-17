@@ -1,4 +1,5 @@
 import BarraLateral from "../../components/BarraLateral";
+import { API_URL } from "../../config/api";
 import "./Pessoas.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,19 +38,15 @@ function Pessoas() {
   useEffect(() => {
     async function carregarDados() {
       try {
-        const [responsePessoas, responseTotais] = await Promise.all(
-          [
-            fetch("https://localhost:7198/api/Pessoa"),
-            fetch("https://localhost:7198/api/Total/Pessoas")
-          ],
-        );
+        const [responsePessoas, responseTotais] = await Promise.all([
+          fetch(`${API_URL}/api/Pessoa`),
+          fetch(`${API_URL}/api/Total/Pessoas`),
+        ]);
         if (!responsePessoas.ok) {
           throw new Error("Erro ao buscar pessoas.");
         }
 
         const dadosPessoas: Pessoa[] = await responsePessoas.json();
-
-        
 
         if (!responseTotais.ok) {
           throw new Error("Erro ao buscar os totais.");
@@ -83,7 +80,7 @@ function Pessoas() {
       return;
     }
     try {
-      const response = await fetch("https://localhost:7198/api/Pessoa", {
+      const response = await fetch(`${API_URL}/api/Pessoa`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +97,7 @@ function Pessoas() {
       }
 
       const novaPessoa: Pessoa = await response.json();
-
+      //Adiciona a nova pessoa á tabela após enviar ao backend
       setPessoas((pessoasAtuais) => [...pessoasAtuais, novaPessoa]);
 
       limparFormulario();
@@ -120,7 +117,7 @@ function Pessoas() {
     }
 
     try {
-      const response = await fetch(`https://localhost:7198/api/Pessoa/${id}`, {
+      const response = await fetch(`${API_URL}/api/Pessoa/${id}`, {
         method: "DELETE",
       });
 
@@ -151,8 +148,8 @@ function Pessoas() {
     setIdade(String(pessoa.idade));
     setMostrarFormulario(true);
   }
-
   async function editarPessoa() {
+    //se nao estiver sido selecionado ninguem, para a execução da funcao
     if (pessoaEditandoId === null) {
       return;
     }
@@ -164,7 +161,7 @@ function Pessoas() {
 
     try {
       const response = await fetch(
-        `https://localhost:7198/api/Pessoa/${pessoaEditandoId}`,
+        `${API_URL}/api/Pessoa/${pessoaEditandoId}`,
         {
           method: "PUT",
           headers: {
